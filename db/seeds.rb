@@ -84,7 +84,7 @@ categories.each do |category|
 end
 
 500.times do
-  user = Faker::StarWars.character
+  user = Faker::Name.name
   email = user.delete(' ').downcase
   names = user.split(' ')
 
