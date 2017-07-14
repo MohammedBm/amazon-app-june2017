@@ -83,7 +83,7 @@ categories.each do |category|
   Category.create(name: category)
 end
 
-500.times do
+150.times do
   user = Faker::Name.name
   email = user.delete(' ').downcase
   names = user.split(' ')
