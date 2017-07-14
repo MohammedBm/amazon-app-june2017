@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Amaonz2017</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+
+    <div>
+      <span>
+        <%= link_to 'Home',home_path %>
+      </span>
+      |
+      <span>
+        <%= link_to 'About',about_path %>
+      </span>
+      |
+      <span>
+        <%= link_to 'Contact',contact_path %>
+      </span>
+      |
+      <span>
+      <%= link_to 'New Product', new_product_path %>
+      </span>
+      |
+      <span>
+        <%= link_to 'All Products', products_path	 %>
+      </span>
+      |
+      <% if user_singed_in? && can?(:manage, @product) %>
+      <%= link_to 'Dashboard', admin_dashboard_index_path	 %>
+      <% end %>
+      |
+      <% if user_singed_in?%>
+        <span>Hello, <%= current_user.full_name %>!</span>
+        <span><%= link_to 'Log Out', sessions_path, method: :delete, data:{confirm:'Log Out?'} %></span>
+      <% else %>
+        <span><%= link_to 'Sign In', new_session_path%> |</span>
+        <span><%= link_to 'Create an Account', new_user_path%> |</span>
+      <% end %>
+
+
+      <hr />
+    </div>
+
+
+
+        <% if flash[:notice] %>
+          <div class='alert alert-success'>
+            <%= flash[:notice] %>
+          </div>
+        <% elsif flash[:alert] %>
+          <div class='alert alert-danger'>
+            <%= flash[:alert] %>
+          </div>
+        <% end %>
+
+
+
+
+
+
+
+
+    <%= yield %>
+  </body>
+</html>

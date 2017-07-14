@@ -1,0 +1,42 @@
+<h3><%= @product.title %></h3>
+<p><%= @product.description %></p>
+<p>$<%= @product.price %></p>
+<p>Category: <%= @product.category.name %></p>
+<p><strong>Seller:</strong><%= @product.user&.full_name %></p>
+<% if user_singed_in? && can?(:manage, @product) %>
+  <% if user_singed_in? %>
+    <%= link_to 'Edit', edit_product_path(@product) %>
+    <%= link_to 'Destroy', product_path(@product), method: :delete %>
+  <% end %>
+<% end %>
+
+<div>
+  <h3>Add a Review </h3>
+  <%= form_for([@product, Review.new]) do |f| %>
+    <div>
+      <%= f.label :body %>
+      <%= f.text_area :body %>
+    </div>
+    <div>
+      <%= f.label :rating %>
+      <%= f.select :rating, [5,4,3,2,1] %>
+    </div>
+    <%= f.submit %>
+  <% end %>
+</div>
+
+<ul class='answer-list'>
+  <% @product.reviews.each do |review| %>
+    <li>
+      <p><%= review.body %></p>
+      <p><strong>Commentor: </strong> <%= review.user&.full_name %></p>
+      <% if user_singed_in? %>
+        <% if user_singed_in? && can?(:destroy, review) %>
+          <%= link_to 'Delete', product_review_path(@product, review),
+            method: :delete, data: { confirm: 'Are you sure?'} %>
+        <% end %>
+      <% end %>
+      <p>Rating: <%= review.rating %></p>
+    </li>
+  <% end %>
+</ul>
