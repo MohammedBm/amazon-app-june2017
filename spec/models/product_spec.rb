@@ -2,6 +2,22 @@ require 'rails_helper'
 
 RSpec.describe Product, type: :model do
 
+  let(:category) { FactoryGirl.create (:category) }
+  let(:user)     { FactoryGirl.create (:user) }
+
+
+  def valid_attributes(new_attributes)
+  attributes = {
+    title: "Powerful Laptop",
+    description: "New, shiny and silver",
+    price: 1000,
+    user_id: user.id,
+    category_id: category.id
+  }
+  attributes.merge(new_attributes)
+end
+
+
   describe 'title' do
 
     it "must be present" do
@@ -11,10 +27,10 @@ RSpec.describe Product, type: :model do
     end
 
     it "must be unique" do
-      title1 = Product.create(title: 'Banana', description: "Has already been created or used ", price: 900)
-      title2 = Product.new(title: 'Banana', description: "Has already been created or used ", price: 900)
-      title2.valid?
-      expect(title2.errors.messages).to have_key(:title)
+      product  = Product.new(valid_attributes({ title: 'Hey Buddy' }))
+      product2 = Product.new(valid_attributes({ title: 'Hey Buddy' }))
+      product.save
+      expect(product2).to be_invalid
     end
 
     it "must be captlized" do

@@ -34,23 +34,28 @@ class ProductsController < ApplicationController
 
   def destroy
     @product = Product.find params[:id]
-    @product.destroy
-    redirect_to products_path
+    if can? :destroy, @product
+      @product.destroy
+      flash[:notice] = "Product successfully deleted."
+      redirect_to products_path
+    else
+      flash[:alert] = "Access Denied. You cannot delete a product that is not yours"
+      redirect_to @product
+    end
   end
-
 
   def create
     @product = Product.new(product_params)
     @product.user = current_user
     if @product.save
       flash[:notice] = "Product created successfully"
-      redirect_to home_path
+      redirect_to product_path(@product)
    else
        flash[:alert] = "Problem creating your product"
-      render :new
+      #  byebug
+       render :new
     end
   end
-
 
   private
 

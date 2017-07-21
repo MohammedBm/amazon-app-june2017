@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.2'
+gem 'rails', '~> 5.1.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
@@ -27,18 +27,28 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-
 gem 'cancancan', '~> 2.0'
+
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'jquery-rails'
+gem 'cowsay'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem 'faker'
 
 group :development, :test do
+  gem 'rspec-rails', '~> 3.5'
+  gem 'rails-controller-testing'
+  gem 'nyan-cat-formatter'
+  gem 'faker', github: 'stympy/faker'
+  gem 'factory_girl'
+  gem 'factory_girl_rails'
+  gem 'awesome_print'
+  gem 'interactive_editor'
+  gem 'hirb'
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails'
-
 end
 
 group :development do
@@ -49,9 +59,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
-  gem 'awesome_print'
-  gem 'interactive_editor'
-  gem 'hirb'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

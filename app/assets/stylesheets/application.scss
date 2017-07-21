@@ -13,6 +13,8 @@
  *= require_tree .
  *= require_self
  */
+ @import "bootstrap-sprockets";
+ @import "bootstrap";
 
   .field_with_errors input, .field_with_errors textarea {
     border: medium solid red;
@@ -31,3 +33,13 @@
  .alert.alert-danger{
    background-color: Salmon;
  }
+
+.navbarHello{
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: lightblue;
+}
+
+body{
+  margin-top: 75px; 
+}
