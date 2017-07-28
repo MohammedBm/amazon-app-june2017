@@ -9,9 +9,11 @@
  * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
- *
+ *= bootstrap-select
  *= require_tree .
  *= require_self
+ *= require font-awesome
+
  */
  @import "bootstrap-sprockets";
  @import "bootstrap";
@@ -41,5 +43,26 @@
 }
 
 body{
-  margin-top: 75px; 
+  margin-top: 75px;
+}
+
+.voting-widget {
+  float: left;
+  width: 75px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
+
+.voting-widget a.active > i {
+  color: LightBlue;
+}
+
+.like-widget{
+  float: left;
+  width: 75px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
 }

@@ -1,52 +1,69 @@
+
+Tag.destroy_all
 Review.destroy_all
 Product.destroy_all
 Category.destroy_all
 User.destroy_all
+Like.destroy_all
+
+
+
+tags = Tag.all
+users = User.all
 
 categories = ['Books', 'Techology', 'Computers', 'Movies', 'TV', 'Fashion', 'Music']
 
 categories.each do |category|
-  Category.create(name: category)
+ Category.create(name: category)
 end
 
-20.times do
-  user = Faker::StarWars.character
-  email = user.delete(' ').downcase
-  names = user.split(' ')
 
-  User.create(
-    email: "#{email}@cohort19.com",
-    first_name: names.first,
-    last_name: names.last,
-    password: '12345',
-    password_confirmation: '12345'
-  )
+i ||= 0;
+while i < 20 do
+ u = User.create(
+ first_name: Faker::Superhero.name,
+ last_name: Faker::Superhero.name,
+ email: "#{i}@email.com",
+ password: "supersecret",
+ )
+ i = i + 1;
 end
+
+74.times do
+  tag = Tag.create(name: Faker::Book.genre)
+end
+
 
 100.times do
-  category = Category.all.sample
-  user = User.all.sample
+ category = Category.all.sample
 
-  p = Product.create(
-    title: Faker::Superhero.name,
-    description: Faker::Hipster.sentence,
-    price: Faker::Commerce.price,
-    category_id: category.id,
-    user_id: user.id
-  )
+p = Product.create(
+   title: Faker::Superhero.name,
+   description: Faker::Hipster.sentence,
+   price: Faker::Commerce.price,
+   category_id: category.id,
+   user_id: User.all.sample.id
+ )
+ p.tags = tags.shuffle.slice(0..rand(10))
 
-  if p.persisted?
-    5.times do
-      reviewer = User.all.sample
-      rating = [1, 2, 3, 4, 5].sample
 
-      p.reviews.create(
-        body:       Faker::Hipster.paragraph(5),
-        rating:     rating,
-        user_id:    reviewer.id
-      )
-    end
+ 5.times do
+   r = Review.create(
+   product_id: p.id,
+   body: Faker::Hipster.sentence,
+   rating: rand(5),
+   user_id: User.all.sample.id
+   )
+   rand(20).times do
+     Like.create(
+     user_id: User.all.sample.id,
+     review_id: r.id
+     )
+
   end
+ end
 end
+
+
 
 puts "#{Product.count} products created!"

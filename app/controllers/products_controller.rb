@@ -1,6 +1,8 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!,only: [:new,:create,:edit,:update,:destroy]
   # before_action :find_product,only: [:show, :edit,:update,:destroy]
+  before_action :find_like, only: [:destroy]
+  # before_action :find_tag, only: [:show]
   def new
     @product = Product.new
   end
@@ -60,8 +62,17 @@ class ProductsController < ApplicationController
   private
 
   def product_params
-      params.require(:product).permit(:title, :description, :price, :category_id )
+      params.require(:product).permit(:title, :description, :price, :category_id, :tag_list )
   end
+
+  def find_like
+    @like = Like.find(params[:id])
+  end
+
+  # def find_tag
+  #   @tag = Tag.find(params[:id])
+  # end
+  #
 
 
 end

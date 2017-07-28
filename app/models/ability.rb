@@ -37,5 +37,17 @@ class Ability
       rev.user == user || rev.product.user == user
     end
 
+
+
+    can :like, Review do |ques|
+      ques.user != user
+    end
+
+    cannot :like, Review do |ques|
+      ques.user == user
+    end
+
+
+
   end
 end

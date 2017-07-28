@@ -1,5 +1,8 @@
 class ReviewsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :edit, :update, :destroy]
+  before_action :find_review, only: [:show]
+  before_action :find_like, only: [:destroy]
+
 
   def create
   @product = Product.find params[:product_id]
@@ -17,6 +20,20 @@ def destroy
   review = Review.find(params[:id])
   review.destroy
   redirect_to product_path(review.product)
+end
+
+def show
+  @like = @review.likes.find_by(user: current_user)
+  redirect_to @review.product
+end
+
+private
+def find_review
+  @review = Review.find params[:id]
+end
+
+def find_like
+  @like = Like.find(params[:id])
 end
 
 

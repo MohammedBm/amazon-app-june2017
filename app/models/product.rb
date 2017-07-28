@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
-
-
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
 
   belongs_to :category
   belongs_to :user
@@ -30,6 +30,19 @@ class Product < ApplicationRecord
     two = self.where('description ILIKE ?', "%#{title}%" ).order(:title, :description)
     one + two;
   end
+
+  def tag_list
+    tags.map(&:name).join(", ")
+  end
+
+def tag_list=(value)
+  self.tags = value.split(/\s*,\s*/).map do |name|
+    Tag.where(name: name.downcase).first_or_create!
+  end
+end
+
+
+
 
 
 private

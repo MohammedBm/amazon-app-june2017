@@ -9,10 +9,18 @@ Rails.application.routes.draw do
     resources :reviews
   end
 
+  resources :reviews do
+      resources :likes
+  end
+
+  resources :tags, only: [:show,:index]
 
 
   resources :users, only: [:new, :create]
 
+  resources :review, only: [], shallow:true do
+    resources :votes, only: [:create, :destroy,:update]
+  end
 
   resources :sessions, only: [:new, :create] do
     delete :destroy, on: :collection

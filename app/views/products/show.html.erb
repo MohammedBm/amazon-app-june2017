@@ -1,6 +1,16 @@
 <h3><%= @product.title %></h3>
 <p><%= @product.description %></p>
 <p>$<%= @product.price %></p>
+
+<p>
+
+<strong>Tags:  </strong>
+<% @product.tags.each do |f| %>
+<%= link_to f.name, tag_path(f)%>,
+<% end %>
+</p>
+
+
 <p>Category: <%= @product.category.name %></p>
 <p><strong>Seller:</strong><%= @product.user&.full_name %></p>
 <% if user_singed_in? && can?(:manage, @product) %>
@@ -28,8 +38,54 @@
 <ul class='answer-list'>
   <% @product.reviews.each do |review| %>
     <li>
+      <div class="voting-widget">
+        <% vote = review.votes.find_by(user: current_user) %>
+        <% if vote.nil? %>
+          <%= link_to fa_icon('arrow-up'),
+            review_votes_path(review,  {is_up: true}),
+            method: :post %>
+          <div><%= review.vote_total %></div>
+          <%= link_to fa_icon('arrow-down'),
+            review_votes_path(review,  {is_up: false}),
+            method: :post %>
+        <% elsif vote.is_up? %>
+          <%= link_to fa_icon('arrow-up'),
+            vote_path(vote),
+            method: :delete,
+            class: 'active' %>
+          <div><%= review.vote_total %></div>
+          <%= link_to fa_icon('arrow-down'),
+            vote_path(vote, {is_up: false}),
+            method: :patch %>
+        <% else %>
+          <%= link_to fa_icon('arrow-up'),
+          vote_path(vote, {is_up: true}),
+          method: :patch %>
+          <div><%= review.vote_total %></div>
+          <%= link_to fa_icon('arrow-down'),
+            vote_path(vote, {is_up: false}),
+            method: :patch, class: 'active'%>
+        <% end %>
+      </div>
+
+      <div>
+
       <p><%= review.body %></p>
       <p><strong>Commentor: </strong> <%= review.user&.full_name %></p>
+      <!-- Like Widget -->
+      <div class= "like-widget">
+        <% if user_singed_in? && can?(:like, review) %>
+        <% @like = review.likes.find_by(user: current_user)%>
+          <% if @like.present? %>
+            <%= link_to fa_icon('heart'), review_like_path(review, @like), method: :delete,class: 'fa-2x' %>
+          <% else %>
+            <%= link_to fa_icon('heart-o'), review_likes_path(review), method: :post,class: 'fa-2x' %>
+          <% end %>
+
+        <% end %>
+        <strong><%= pluralize review.likes.count, 'Like' %>  </strong>
+      </div>
+
       <% if user_singed_in? %>
         <% if user_singed_in? && can?(:destroy, review) %>
           <%= link_to 'Delete', product_review_path(@product, review),
@@ -37,6 +93,8 @@
         <% end %>
       <% end %>
       <p>Rating: <%= review.rating %></p>
+    </div>
     </li>
+    <hr  />
   <% end %>
 </ul>
