@@ -32,6 +32,7 @@ gem 'bootstrap-select-rails'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'jquery-rails'
 gem 'cowsay'
+gem 'rails-erd', require: false, group: :development
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
